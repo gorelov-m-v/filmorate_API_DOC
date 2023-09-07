@@ -8,13 +8,13 @@ servers:
   - url: http://localhost:8080
 tags:
   - name: Films
-    description: Тут будет описание категории запросов
+    description: Сервис отчевает за внесение фильмов в реестр и рейтинг фильмов.
 paths:
   /films/{id}:
     get:
       tags:
         - Films
-      summary: Тут будет описание запроса
+      summary: Получение данных фильма по его идентификатору.
       description: еще одно описание
       operationId: getFilmById
       parameters:
@@ -38,6 +38,67 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/getFilmBiId_404' 
+  /films:
+    get:
+      tags:
+        - Films
+      summary: Получение списка фильмов.
+      description: еще одно описание
+      operationId: getFilms
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/getFilmBiId_200'
+    post:
+      tags:
+        - Films
+      summary: Creates list of users with given input array
+      description: Creates list of users with given input array
+      operationId: createUsersWithListInput
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/createFilm_200_request'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/createFilm_200_request'          
+        default:
+          description: successful operation
+  # /films/popular:
+  #   get:
+  #     tags:
+  #       - Films
+  #     summary: Получение рейтинга фильмов.
+  #     description: еще одно описание
+  #     operationId: getRating
+  #     parameters:
+  #       - name: count
+  #         in: query
+  #         description: Количество фильмов в рейтинге. По умолчанию 10.
+  #         required: false
+  #         schema:
+  #           type: integer
+  #           format: int64
+  #     responses:
+  #       '200':
+  #         description: Successful operation
+  #         content:
+  #           application/json:
+  #             schema:
+  #               type: array
+  #               items:
+  #                 $ref: '#/components/schemas/getFilmBiId_200'
+
 
   
 components:
@@ -74,3 +135,19 @@ components:
           items:
             type: string
             example: '[id] film with this id does not exist'
+    createFilm_200_request:
+      properties:
+        name:
+          type: string
+          example: Saturday Night Fever
+        description: 
+          type: string
+          example: It Is Now Rated PG Because we want everyone to see John Travolta's performance... Because we want everyone to hear the 1 group in the country, the Bee Gees... Because we want everyone to catch 'Saturday Night Fever
+        releaseDate:
+          type: string
+          example: 1977-12-12
+        duration:
+          type: integer
+          format: int64
+          example: 118
+    
